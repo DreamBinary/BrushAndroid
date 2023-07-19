@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,12 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import com.cxq.brushandroid.R
 import com.cxq.brushandroid.entity.Section
-import com.cxq.brushandroid.presentation.component.Bg
 import com.cxq.brushandroid.presentation.theme.Typography
 import com.cxq.brushandroid.presentation.theme.wearColor
 import com.cxq.brushandroid.utils.SectionUtil
 import kotlinx.coroutines.delay
-import kotlin.text.Typography.section
 
 
 @Composable
@@ -74,7 +71,7 @@ fun SectionIng(section: Section, navToSectionEd: () -> Unit = {}) {
     }
 
     LaunchedEffect(true) {
-        delay(3000)
+        delay(100)
         navToSectionEd()
     }
 
@@ -85,4 +82,3 @@ fun SectionIng(section: Section, navToSectionEd: () -> Unit = {}) {
 fun SectionIngPreview() {
     SectionIng(Section.OLB)
 }
-

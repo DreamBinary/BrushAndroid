@@ -13,5 +13,5 @@ internal val wearColor: Colors = Colors(
 //    onPrimary = Color.Black,
 //    onSecondary = Color.Black,
 //    onError = Color.Black
-    onPrimary = Color(0xff333333)
+    onPrimary = Color(0xff333333),
 )

@@ -1,43 +1,54 @@
 package com.cxq.brushandroid.presentation
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import androidx.wear.compose.material.MaterialTheme
+import androidx.wear.compose.material.ScalingLazyColumn
+import androidx.wear.compose.material.Text
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
-import com.cxq.brushandroid.entity.Section
+import com.cxq.brushandroid.R
+import com.cxq.brushandroid.entity.Route
+import com.cxq.brushandroid.presentation.pages.Finish
 import com.cxq.brushandroid.presentation.pages.SectionEd
 import com.cxq.brushandroid.presentation.pages.SectionIng
 import com.cxq.brushandroid.presentation.pages.SectionPre
 import com.cxq.brushandroid.presentation.pages.Start
 import com.cxq.brushandroid.presentation.theme.BrushAndroidTheme
 import com.cxq.brushandroid.viewmodel.MyVM
-import kotlin.text.Typography.section
 
 class MainActivity : ComponentActivity() {
+
+    private val bgmPlayer by lazy {
+        MediaPlayer.create(this, R.raw.bgm)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WearApp()
+            WearApp(bgmPlayer = bgmPlayer)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bgmPlayer.release()
     }
 }
 
 @Composable
-fun WearApp(vm: MyVM = viewModel()) {
+fun WearApp(vm: MyVM = viewModel(), bgmPlayer: MediaPlayer) {
     BrushAndroidTheme {
         Column(
             modifier = Modifier
@@ -48,43 +59,70 @@ fun WearApp(vm: MyVM = viewModel()) {
             val navController = rememberSwipeDismissableNavController()
             SwipeDismissableNavHost(
                 navController = navController,
-                startDestination = "start"
+                startDestination = Route.HOME
             ) {
-                composable("start") {
-                    Start(vm.section){
-                        navController.navigate("section_pre")
+                composable(Route.HOME) {
+                    ScalingLazyColumn {
+                        items(2) {
+                            Text(modifier = Modifier.clickable {
+                                vm.reset()
+                                navController.navigate(Route.BRUSH_ING)
+                                bgmPlayer.start()
+                            }, text = "Item $it")
+                        }
                     }
                 }
 
-                composable("section_pre") {
-                    SectionPre(section = vm.section, navToSectionIng = {
-                        navController.navigate("section_ing")
-                    })
-                }
-
-                composable("section_ing") {
-                    SectionIng(section = vm.section, navToSectionEd = {
-                        navController.navigate("section_ed")
-                    })
-                }
-
-                composable("section_ed") {
-                    SectionEd(section = vm.section, navToSectionPre = { section ->
-                        if (section != null) {
-                            vm.section = section
-                            navController.navigate("section_pre")
-                        } else {
-                            navController.navigate("start")
+                navigation(startDestination = Route.START, route = Route.BRUSH_ING) {
+                    composable(Route.START) {
+                        Start(vm.section) {
+                            navController.popBackStack()
+                            navController.navigate(Route.SECTION_PRE)
                         }
-                    })
+                    }
+
+                    composable(Route.SECTION_PRE) {
+                        SectionPre(section = vm.section, navToSectionIng = {
+                            navController.popBackStack()
+                            navController.navigate(Route.SECTION_ING)
+                        })
+                    }
+
+                    composable(Route.SECTION_ING) {
+                        SectionIng(section = vm.section, navToSectionEd = {
+                            navController.popBackStack()
+                            navController.navigate(Route.SECTION_ED)
+                        })
+                    }
+
+                    composable(Route.SECTION_ED) {
+                        SectionEd(section = vm.section, navToSectionPre = { section ->
+                            if (section != null) {
+                                vm.section = section
+                                navController.popBackStack()
+                                navController.navigate(Route.SECTION_PRE)
+                            } else {
+                                navController.popBackStack()
+                                navController.navigate(Route.FINISH)
+                            }
+                        })
+                    }
+
+                    composable(Route.FINISH) {
+                        Finish(popUp = {
+                            bgmPlayer.reset()
+                            navController.popBackStack()
+                        })
+                    }
                 }
             }
         }
     }
 }
 
-@Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
-@Composable
-fun DefaultPreview() {
-    WearApp()
-}
+
+//@Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
+//@Composable
+//fun DefaultPreview() {
+//    WearApp()
+//}

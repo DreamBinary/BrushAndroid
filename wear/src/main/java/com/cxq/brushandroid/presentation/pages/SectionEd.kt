@@ -4,7 +4,6 @@ package com.cxq.brushandroid.presentation.pages
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -27,7 +26,6 @@ import com.cxq.brushandroid.presentation.theme.Typography
 import com.cxq.brushandroid.presentation.theme.wearColor
 import com.cxq.brushandroid.utils.SectionUtil
 import kotlinx.coroutines.delay
-import kotlin.text.Typography.section
 
 
 @Composable
@@ -73,7 +71,7 @@ fun SectionEd(section: Section, navToSectionPre: (section: Section?) -> Unit = {
     }
 
     LaunchedEffect(true) {
-        delay(3000)
+        delay(100)
         navToSectionPre(SectionUtil.getNext(section))
     }
 }
@@ -83,4 +81,3 @@ fun SectionEd(section: Section, navToSectionPre: (section: Section?) -> Unit = {
 fun SectionEdPreview() {
     SectionEd(Section.OLB)
 }
-

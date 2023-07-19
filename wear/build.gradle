@@ -73,6 +73,7 @@ dependencies {
     def wear_compose_version = "1.1.2"
     implementation "androidx.wear.compose:compose-navigation:$wear_compose_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$wear_compose_version"
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.30.0")
 
 
 }

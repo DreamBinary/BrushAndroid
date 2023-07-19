@@ -1,8 +1,10 @@
 package com.cxq.mobile
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -13,6 +15,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.cxq.mobile.ui.theme.BrushAndroidTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val bgmPlayer by lazy {
+        MediaPlayer.create(this, R.raw.bgm)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    Greeting(bgmPlayer)
                 }
             }
         }
@@ -30,10 +36,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting(bgmPlayer: MediaPlayer, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
-        modifier = modifier
+        text = "Hello!",
+        modifier = modifier.clickable {
+            bgmPlayer.start()
+        }
     )
 }
 
@@ -41,6 +49,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     BrushAndroidTheme {
-        Greeting("Android")
+        Greeting(bgmPlayer = MediaPlayer.create(null, R.raw.bgm))
     }
 }

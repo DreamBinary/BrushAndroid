@@ -1,5 +1,6 @@
 package com.cxq.brushandroid.presentation.pages
 
+import android.media.MediaPlayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
@@ -56,8 +57,11 @@ fun Start(section: Section, navToSection: () -> Unit) {
         )
     }
 
+    val context = LocalContext.current
     LaunchedEffect(true) {
-        delay(3000)
+        delay(500)
+        MediaPlayer.create(context, R.raw.start).start()
+        delay(500)
         navToSection()
     }
 }
@@ -65,5 +69,5 @@ fun Start(section: Section, navToSection: () -> Unit) {
 @Preview(device = Devices.WEAR_OS_SQUARE, showSystemUi = true)
 @Composable
 fun DefaultPreview() {
-    Start(Section.OLB){}
+    Start(Section.OLB) {}
 }
