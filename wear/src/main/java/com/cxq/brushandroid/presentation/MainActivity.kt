@@ -1,9 +1,11 @@
 package com.cxq.brushandroid.presentation
 
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.navigation
 import androidx.wear.compose.material.MaterialTheme
@@ -22,6 +25,7 @@ import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.cxq.brushandroid.R
 import com.cxq.brushandroid.entity.Route
 import com.cxq.brushandroid.presentation.pages.Finish
+import com.cxq.brushandroid.presentation.pages.Score
 import com.cxq.brushandroid.presentation.pages.SectionEd
 import com.cxq.brushandroid.presentation.pages.SectionIng
 import com.cxq.brushandroid.presentation.pages.SectionPre
@@ -34,10 +38,13 @@ class MainActivity : ComponentActivity() {
     private val bgmPlayer by lazy {
         MediaPlayer.create(this, R.raw.bgm)
     }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WearApp(bgmPlayer = bgmPlayer)
+            BrushAndroidTheme {
+            Score()}
         }
     }
 
@@ -48,7 +55,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun WearApp(vm: MyVM = viewModel(), bgmPlayer: MediaPlayer) {
+fun WearApp(vm: MyVM = viewModel()) {
     BrushAndroidTheme {
         Column(
             modifier = Modifier
@@ -57,6 +64,8 @@ fun WearApp(vm: MyVM = viewModel(), bgmPlayer: MediaPlayer) {
             verticalArrangement = Arrangement.Center
         ) {
             val navController = rememberSwipeDismissableNavController()
+            val context = LocalContext.current
+            lateinit var bgmPlayer: MediaPlayer
             SwipeDismissableNavHost(
                 navController = navController,
                 startDestination = Route.HOME
@@ -67,6 +76,7 @@ fun WearApp(vm: MyVM = viewModel(), bgmPlayer: MediaPlayer) {
                             Text(modifier = Modifier.clickable {
                                 vm.reset()
                                 navController.navigate(Route.BRUSH_ING)
+                                bgmPlayer = MediaPlayer.create(context, R.raw.bgm)
                                 bgmPlayer.start()
                             }, text = "Item $it")
                         }
@@ -109,10 +119,10 @@ fun WearApp(vm: MyVM = viewModel(), bgmPlayer: MediaPlayer) {
                     }
 
                     composable(Route.FINISH) {
-                        Finish(popUp = {
-                            bgmPlayer.reset()
+                        Finish {
+                            bgmPlayer.stop()
                             navController.popBackStack()
-                        })
+                        }
                     }
                 }
             }
