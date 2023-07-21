@@ -108,7 +108,6 @@ fun Tip() {
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Text(
-
                 text = "忽略",
                 style = Typography.body2.copy(
                     fontWeight = FontWeight.Bold,

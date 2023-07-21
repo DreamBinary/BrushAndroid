@@ -26,6 +26,7 @@ class MainActivity : ComponentActivity() {
             override fun handleOnBackPressed() {
             }
         })
+        SpeakUtil.init(this)
         setContent {
             BrushAndroidTheme {
                 // A surface container using the 'background' color from the theme
@@ -45,7 +46,7 @@ fun Greeting(bgmPlayer: MediaPlayer, modifier: Modifier = Modifier) {
     Text(
         text = "Hello!",
         modifier = modifier.clickable {
-            bgmPlayer.start()
+            SpeakUtil.speakText("你好")
         }
     )
 }

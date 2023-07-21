@@ -3,12 +3,15 @@ package com.cxq.brushandroid.presentation.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +22,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.cxq.brushandroid.R
 import com.cxq.brushandroid.presentation.theme.Typography
@@ -26,7 +30,7 @@ import com.cxq.brushandroid.presentation.theme.wearColor
 
 
 @Composable
-fun Score() {
+fun Score(onBack: () -> Unit = {}) {
     Column(
         Modifier
             .fillMaxSize()
@@ -34,7 +38,15 @@ fun Score() {
             .padding(top = 16.dp, bottom = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(2f))
+        Icon(
+            modifier = Modifier
+                .clickable {
+                    onBack()
+                }.align(Alignment.Start).padding(start = 8.dp).size(20.dp),
+            imageVector = Icons.Rounded.ArrowBack,
+            contentDescription = null,
+            tint = wearColor.primary,
+        )
         Box(contentAlignment = Alignment.BottomCenter) {
             Image(
                 modifier = Modifier.size(75.dp),
