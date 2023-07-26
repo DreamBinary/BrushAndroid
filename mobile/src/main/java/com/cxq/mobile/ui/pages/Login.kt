@@ -1,7 +1,6 @@
 package com.cxq.mobile.ui.pages
 
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,9 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -34,7 +34,7 @@ import com.cxq.mobile.R
 import com.cxq.mobile.ui.theme.Typography
 
 @Composable
-fun Enter() {
+fun Enter(navToMain: ()->Unit = {}) {
     val isLogin = remember { mutableStateOf(true) }
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -103,10 +103,15 @@ fun Enter() {
                         text = if (isLogin.value) "Sign up" else "Log in",
                         color = Color.Gray
                     )
-                    TextButton(modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(color = Color(0xff99EADC)), onClick = { }) {
+                    ElevatedButton(modifier = Modifier
+                        .fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xff99EADC)),
+                        onClick = {
+
+                            navToMain()
+
+                        }) {
                         Text(
                             text = if (isLogin.value) "Log in" else "Sign up",
                             style = Typography.titleMedium.copy(fontWeight = FontWeight.Bold)

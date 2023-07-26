@@ -2,71 +2,117 @@ package com.cxq.mobile.ui.pages
 
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.BottomAppBar
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.cxq.mobile.entity.Route
+import androidx.compose.ui.unit.dp
+import com.cxq.mobile.R
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun Main() {
-    val navController = rememberNavController()
-    val items: List<Screen> = listOf(
-        Screen.Analysis,
-        Screen.Brush,
-        Screen.Mine
-    )
+    val pageState = rememberPagerState(
+        initialPage = 0, initialPageOffsetFraction = 0f
+    ) { 3 }
+
+    val scope = rememberCoroutineScope()
     Scaffold(
+
         bottomBar = {
-            BottomAppBar() {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-                items.forEach { screen ->
-
-//                    Image(painter = Icons.Default, contentDescription = null)
-
-                    Spacer(modifier = Modifier.weight(1f))
-                    Icon(modifier = Modifier.clickable{
-                        navController.navigate(screen.route) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            // Avoid multiple copies of the same destination when
-                            // reselecting the same item
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            restoreState = true
-                        }
-                    }, imageVector = Icons.Default.Add, contentDescription = null)
-                    Spacer(modifier = Modifier.weight(1f))
+            BottomBar(pageState.currentPage) { index ->
+                scope.launch {
+                    pageState.animateScrollToPage(index)
                 }
             }
-        }
+        },
     ) {
-        Route(navController)
+        HorizontalPager(
+            modifier = Modifier
+                .navigationBarsPadding()
+                .padding(bottom = 70.dp),
+            state = pageState
+        ) {
+            when (it) {
+                0 -> Analysis()
+                1 -> Brush()
+                2 -> Mine()
+            }
+        }
     }
 }
 
-sealed class Screen(val route: String) {
-    object Analysis : Screen(Route.ANALYSIS)
-    object Brush : Screen(Route.BRUSH)
-    object Mine : Screen(Route.MINE)
+@Composable
+private fun BottomBar(
+    selectedPage: Int,
+    onSelect: (Int) -> Unit
+) {
+    val bottomIdUn: List<Int> = listOf(R.drawable.analysis0, R.drawable.logo, R.drawable.mine0)
+    val bottomIdEd: List<Int> = listOf(R.drawable.analysis1, R.drawable.logo, R.drawable.mine1)
+
+    Row(Modifier.navigationBarsPadding()) {
+        Spacer(modifier = Modifier.weight(1f))
+        Row(
+            modifier = Modifier
+                .weight(4f)
+                .clip(RoundedCornerShape(100.dp))
+                .background(color = Color(0xff99C7C2).copy(alpha = 0.38f)),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+            listOf(0, 1, 2).forEach { index ->
+                Spacer(modifier = Modifier.weight(0.5f))
+                Image(
+                    modifier = Modifier
+                        .size(if (index == 1) 70.dp else 35.dp)
+                        .padding(
+                            if (index == 1) 5.dp else {
+                                animateDpAsState(targetValue = if (selectedPage == index) 0.dp else 5.dp).value
+                            }
+                        )
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember {
+                                MutableInteractionSource()
+                            },
+                            onClick = {
+                                onSelect(index)
+                            }),
+                    painter =
+                    painterResource(id = if (selectedPage == index) bottomIdEd[index] else bottomIdUn[index]),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.weight(0.5f))
+            }
+            Spacer(modifier = Modifier.weight(1f))
+        }
+        Spacer(modifier = Modifier.weight(1f))
+    }
 }
 
 @Preview

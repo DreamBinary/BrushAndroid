@@ -2,19 +2,31 @@ package com.cxq.mobile.ui.pages
 
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.cxq.mobile.entity.Route
 
 
 @Composable
-fun Route(navController: NavHostController) {
+fun Route() {
+    val navController = rememberNavController()
     NavHost(
-        navController = navController, startDestination = Route.ANALYSIS
+        navController = navController, startDestination = Route.WELCOME
     ) {
+        composable(Route.MAIN) {
+            Main()
+        }
+        composable(Route.WELCOME) {
+            Welcome {
+                navController.navigate(Route.ENTER)
+            }
+        }
+
         composable(Route.ENTER) {
-            Enter()
+            Enter {
+                navController.navigate(Route.MAIN)
+            }
         }
 
         composable(Route.ANALYSIS) {
