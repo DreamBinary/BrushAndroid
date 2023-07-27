@@ -60,6 +60,7 @@ fun Analysis() {
             )
             .statusBarsPadding()
             .navigationBarsPadding()
+            .padding(top = 20.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -90,7 +91,7 @@ fun Analysis() {
         StartContainer()
 
         Text(
-            modifier = Modifier.padding(start = 25.dp, top = 15.dp, bottom = 10.dp),
+            modifier = Modifier.padding(start = 25.dp, top = 20.dp, bottom = 10.dp),
             text = "Your Analysis",
             style = Typography.titleLarge
         )
@@ -102,7 +103,7 @@ fun Analysis() {
         Row(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 14.dp)
+                .padding(horizontal = 14.dp , vertical = 5.dp)
         ) {
             Column(
                 modifier = Modifier.weight(1f)
@@ -115,7 +116,7 @@ fun Analysis() {
                 ) {
                     Text(
                         text = "历史最高分",
-                        style = Typography.titleMedium.copy(
+                        style = Typography.headlineSmall.copy(
                             color = Color.White
                         )
                     )
@@ -127,7 +128,7 @@ fun Analysis() {
                         )
                     )
                     Text(
-                        text = "月度最高 Top", style = Typography.bodyMedium
+                        text = "月度最高 Top", style = Typography.titleMedium
                     )
                 }
 
@@ -143,7 +144,7 @@ fun Analysis() {
                         painter = painterResource(id = R.drawable.month_score),
                         contentDescription = null
                     )
-                    Text(text = "月度评分 Monthly", style = Typography.bodyMedium)
+                    Text(text = "月度评分 Monthly", style = Typography.titleMedium)
 
                 }
             }
@@ -179,7 +180,7 @@ fun Analysis() {
                             contentDescription = null
                         )
                     }
-                    Text(text = "平均力度 Average", style = Typography.bodyMedium)
+                    Text(text = "平均力度 Average", style = Typography.titleMedium)
                 }
 
                 BoxWithConstraints(Modifier.weight(3f), contentAlignment = Alignment.Center) {
@@ -191,7 +192,7 @@ fun Analysis() {
                     ) {
                         Spacer(modifier = Modifier.weight(1f))
 
-                        Text(text = "热词 Conclusion", style = Typography.bodyMedium)
+                        Text(text = "热词 Conclusion", style = Typography.titleMedium)
                     }
 
                     HotWord(
@@ -267,7 +268,7 @@ fun StartContainer() {
         ) {
             Text(
                 text = "New TuneBrush Journey",
-                style = Typography.titleLarge.copy(fontWeight = FontWeight.Medium)
+                style = Typography.titleLarge
             )
             Text(
                 text = "预计进行 12min      现在就开始！",
@@ -277,7 +278,7 @@ fun StartContainer() {
             Text(
                 text = "Get Started!",
                 textDecoration = TextDecoration.Underline,
-                style = Typography.titleLarge.copy(fontWeight = FontWeight.Medium)
+                style = Typography.titleLarge
             )
         }
         Image(
@@ -338,16 +339,16 @@ fun MonthRow(selectedMonth: Int, onSelect: (Int) -> Unit = {}) {
                         onSelect(index)
                     }, horizontalAlignment = CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(2f))
                 Text(
                     text = monthsCn[index], style = Typography.bodyMedium.copy(
                         color = animateColorAsState(targetValue = if (selectedTabIndex == index) Color.White else Color.Gray).value,
                     )
                 )
-                Spacer(modifier = Modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(3f))
                 Text(
                     text = months[index],
-                    style = Typography.titleLarge.copy(fontWeight = FontWeight.Medium).copy(
+                    style = Typography.titleLarge.copy(
                         color = animateColorAsState(
                             targetValue = if (selectedTabIndex == index) Color.White else Color(
                                 0xff365869
@@ -355,7 +356,7 @@ fun MonthRow(selectedMonth: Int, onSelect: (Int) -> Unit = {}) {
                         ).value,
                     )
                 )
-                Spacer(modifier = Modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(3f))
             }
 
         }

@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cxq.mobile.R
+import com.cxq.mobile.ui.component.LogoButton
 
 
 @Composable
@@ -28,19 +29,7 @@ fun Welcome(onNavToEnter: () -> Unit = { }) {
             painter = painterResource(id = R.drawable.welcome),
             contentDescription = null
         )
-        TextButton(
-            modifier = Modifier
-                .padding(bottom = 100.dp)
-                .size(70.dp),
-            shape = CircleShape,
-            contentPadding = PaddingValues(0.dp),
-            onClick = onNavToEnter
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = null
-            )
-        }
+        LogoButton(Modifier.padding(bottom = 120.dp), onClick = onNavToEnter)
     }
 }
 

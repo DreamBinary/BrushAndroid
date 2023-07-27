@@ -31,10 +31,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cxq.mobile.R
+import com.cxq.mobile.ui.theme.MyColor
 import com.cxq.mobile.ui.theme.Typography
 
 @Composable
-fun Enter(navToMain: ()->Unit = {}) {
+fun Enter(navToMain: () -> Unit = {}) {
     val isLogin = remember { mutableStateOf(true) }
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -43,15 +44,7 @@ fun Enter(navToMain: ()->Unit = {}) {
         Column(
             Modifier
                 .fillMaxSize()
-                .background(
-                    androidx.compose.ui.graphics.Brush.linearGradient(
-                        colors = listOf(
-                            Color(0xff7DE2D1),
-                            Color(0xff9BEADC),
-                            Color(0xff16C2A5)
-                        ),
-                    ),
-                ),
+                .background(MyColor.bgGradient),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(modifier = Modifier.weight(1f)) {

@@ -23,6 +23,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -39,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.cxq.mobile.R
 import com.cxq.mobile.ui.component.Container
 import com.cxq.mobile.ui.theme.MyColor
@@ -206,14 +209,16 @@ fun Avatar(modifier: Modifier = Modifier, bgSize: Dp, avatarSize: Dp, degrees: F
         ) {
             Spacer(modifier = Modifier.weight(1f))
         }
+
         Surface(
-            Modifier.size(avatarSize),
+            modifier = Modifier.size(avatarSize),
             shape = CircleShape,
             color = MyColor.lightPrimary,
-            shadowElevation = 1.dp
+            shadowElevation = 10.dp
         ) {
             Image(
-                modifier = Modifier.size(avatarSize * 0.8f),
+                modifier = Modifier
+                    .size(avatarSize * 0.8f),
                 painter = painterResource(id = R.drawable.avatar),
                 contentDescription = null
             )

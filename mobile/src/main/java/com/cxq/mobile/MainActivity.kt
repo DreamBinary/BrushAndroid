@@ -13,7 +13,13 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
+import com.cxq.mobile.ui.component.NoteAnim
+import com.cxq.mobile.ui.pages.BrushIng
+import com.cxq.mobile.ui.pages.CountDown
 import com.cxq.mobile.ui.pages.Main
+import com.cxq.mobile.ui.pages.Route
+import com.cxq.mobile.ui.pages.StartBrush
+import com.cxq.mobile.ui.pages.Welcome
 import com.cxq.mobile.ui.theme.BrushAndroidTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -33,7 +39,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Main()
+                    Route()
+//                    NoteAnim()
                 }
             }
         }
