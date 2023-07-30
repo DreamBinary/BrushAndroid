@@ -47,7 +47,7 @@ fun SectionPre(section: Section, navToSectionIng: () -> Unit) {
     }
 
     LaunchedEffect(true) {
-        delay(100)
+        delay(2000)
         navToSectionIng()
     }
 }

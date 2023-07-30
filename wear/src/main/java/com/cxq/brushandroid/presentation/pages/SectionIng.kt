@@ -71,7 +71,7 @@ fun SectionIng(section: Section, navToSectionEd: () -> Unit = {}) {
     }
 
     LaunchedEffect(true) {
-        delay(100)
+        delay(30000)
         navToSectionEd()
     }
 

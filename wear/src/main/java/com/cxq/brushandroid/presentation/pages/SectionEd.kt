@@ -71,7 +71,7 @@ fun SectionEd(section: Section, navToSectionPre: (section: Section?) -> Unit = {
     }
 
     LaunchedEffect(true) {
-        delay(100)
+        delay(1000)
         navToSectionPre(SectionUtil.getNext(section))
     }
 }

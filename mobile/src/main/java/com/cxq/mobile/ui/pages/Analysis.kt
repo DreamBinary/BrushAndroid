@@ -103,7 +103,7 @@ fun Analysis() {
         Row(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 14.dp , vertical = 5.dp)
+                .padding(horizontal = 14.dp, vertical = 5.dp)
         ) {
             Column(
                 modifier = Modifier.weight(1f)
@@ -122,7 +122,7 @@ fun Analysis() {
                     )
                     Text(
                         text = "99",
-                        style = Typography.displayMedium.copy(
+                        style = Typography.displaySmall.copy(
                             color = Color.White,
                             fontWeight = FontWeight.Bold
                         )
