@@ -57,13 +57,13 @@ fun Mine() {
         val scrollState = rememberScrollState()
         val scrollDp = animateDpAsState(targetValue = with(LocalDensity.current) {
             scrollState.value.toDp()
-        })
+        })        
         Column(Modifier.background(MyColor.primary)) {
             Spacer(modifier = Modifier.weight(1f))
             Column(
                 modifier = Modifier
                     .height(height * 0.75f + scrollDp.value)
-                    .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
+                         .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
                     .background(Color.White)
                     .fillMaxSize()
                     .verticalScroll(scrollState),
